@@ -8,6 +8,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+
 node_modules/
 .env
 .DS_Store
@@ -25,3 +26,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+package-lock.json
+public/NanumGothicCoding-Regular.ttf

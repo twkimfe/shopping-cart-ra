@@ -1,35 +1,57 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from "react";
+import Navbar from "./components/Navbar.jsx";
+import Amazon from "./components/Amazon.jsx";
+import Cart from "./components/Cart.jsx";
+import "./styles/amazon.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+library.add(fas);
+
+const App = () => {
+  const [show, setShow] = useState(true);
+  const [cart, setCart] = useState([]);
+  const [warning, setWarning] = useState(false);
+
+  const handleClick = (item) => {
+    let isPresent = false;
+    cart.forEach((product) => {
+      if (item.id === product.id) isPresent = true;
+    });
+    if (isPresent) {
+      setWarning(true);
+      setTimeout(() => {
+        setWarning(false);
+      }, 2000);
+      return;
+    }
+    setCart([...cart, item]);
+  };
+
+  const handleChange = (item, d) => {
+    const tempArr = cart.map((data) => {
+      if (data.id === item.id) {
+        return { ...data, amount: Math.max(1, data.amount + d) };
+      }
+      return data;
+    });
+    setCart([...tempArr]);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <React.Fragment>
+      <Navbar size={cart.length} setShow={setShow} />
+      {show ? (
+        <Amazon handleClick={handleClick} />
+      ) : (
+        <Cart cart={cart} setCart={setCart} handleChange={handleChange} />
+      )}
+      {warning && (
+        <div className="warning">Item is already added to your cart</div>
+      )}
+    </React.Fragment>
+  );
+};
 
-export default App
+export default App;

@@ -3,11 +3,11 @@ import list from "../data.jsx";
 import "../styles/amazon.css";
 import Cards from "./Cards";
 
-const Amazon = () => {
+const Amazon = ({ handleClick }) => {
   return (
     <section>
       {list.map((item) => (
-        <Cards key={item.id} item={item} />
+        <Cards key={item.id} item={item} handleClick={handleClick} />
       ))}
     </section>
   );

@@ -1,3 +1,5 @@
+//src/data.jsx
+
 const list = [
   {
     id: 1,
